@@ -17,6 +17,25 @@ public class BoardController {
         return "tl/board/board";
     }
 
+    @RequestMapping(value = "create", method= RequestMethod.GET)
+        public String create(Model model){
+
+        return "tl/board/board_create";
+    }
+
+    @RequestMapping(value = "modify", method= RequestMethod.GET)
+        public String modify(Model model){
+
+        return "tl/board/board_modify";
+    }
+
+    @RequestMapping(value = "view", method= RequestMethod.GET)
+        public String view(Model model){
+
+        return "tl/board/board_view";
+    }
+
+
 
 
 }
