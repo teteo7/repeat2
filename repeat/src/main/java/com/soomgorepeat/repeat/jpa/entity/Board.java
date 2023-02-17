@@ -1,5 +1,6 @@
 package com.soomgorepeat.repeat.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 @Data
@@ -29,9 +31,13 @@ public class Board {
     private Date dateCreated;
     
     // 멤버 클레스 만들고 member참조키 선언 해주기
+    @ManyToOne(targetEntity=Member.class, fetch= FetchType.EAGER)
+    @JoinColumn(name="member", referencedColumnName="id")
+    private Member member;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy="board", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = RelUserBoardFavorite.class)
+    private Collection<RelUserBoardFavorite> relUserBoardFavorites;
 
-    //
-    // private relUserBoardFavorites
 
 }
