@@ -25,18 +25,17 @@ public class Board {
 
     @Column(name="title", columnDefinition="varchar(120)")
     private String title;
-    @Column(name="content", columnDefinition="mediumntext")
+    @Column(name="content", columnDefinition="mediumtext")
     private String content;
     @Column(name="date_created", columnDefinition="datetime")
     private Date dateCreated;
-    
-    // 멤버 클레스 만들고 member참조키 선언 해주기
-    @ManyToOne(targetEntity=Member.class, fetch= FetchType.EAGER)
-    @JoinColumn(name="member", referencedColumnName="id")
+
+    @ManyToOne(targetEntity = Member.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "member", referencedColumnName="id")
     private Member member;
 
     @JsonManagedReference
-    @OneToMany(mappedBy="board", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = RelUserBoardFavorite.class)
+    @OneToMany(mappedBy = "board", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = RelUserBoardFavorite.class)
     private Collection<RelUserBoardFavorite> relUserBoardFavorites;
 
 

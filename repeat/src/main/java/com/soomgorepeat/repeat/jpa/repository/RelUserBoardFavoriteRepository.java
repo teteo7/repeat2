@@ -15,15 +15,12 @@ import java.util.List;
 @Repository
 public interface RelUserBoardFavoriteRepository extends JpaRepository<RelUserBoardFavorite, Integer> {
 
-    Page<RelUserBoardFavorite> findAllByMember(Member member, Pageable pagealbe);
+    Page<RelUserBoardFavorite> findAllByMember(Member member, Pageable pageable);
     List<RelUserBoardFavorite> findByMember(Member member);
 
-    Boolean existByMemberAndBoard(Member member, Board board);
-
+    Boolean existsByMemberAndBoard(Member member, Board board);
+    // existsBy, findBy, findAllBy
     @Transactional
     @Modifying
     void deleteByMemberAndBoard(Member member, Board board);
-
-
-
 }

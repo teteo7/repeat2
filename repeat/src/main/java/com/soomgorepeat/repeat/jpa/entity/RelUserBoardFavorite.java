@@ -16,16 +16,16 @@ import javax.persistence.*;
 public class RelUserBoardFavorite {
 
     @Id
-    @Column(name="id", columnDefinition = "int")
+    @Column(name="id", columnDefinition="int")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(targetEntity = Member.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="memeber", referencedColumnName = "id")
+    @ManyToOne(targetEntity = Member.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member", referencedColumnName="id")
     private Member member;
 
-    @ManyToOne(targetEntity = Board.class, fetch=FetchType.LAZY)
-    @JoinColumn(name="board", referencedColumnName = "id")
+    @ManyToOne(targetEntity = Board.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "board", referencedColumnName="id")
     private Board board;
     
 }

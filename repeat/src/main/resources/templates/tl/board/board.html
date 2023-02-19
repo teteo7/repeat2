@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{tl/fragments/base}">
-
-<th:block layout:fragment="contentFragment">
-    <style>
-    table, th, td {
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    table, th, td
+    {
         border: 1px gainsboro solid;
     }
-
     .pagination {
         display: inline-block;
     }
@@ -20,17 +22,25 @@
         text-decoration: none;
     }
 </style>
-    <table class="table table-striped">
-        <thead>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>즐겨찾기</th>
-        </thead>
-        <tbody>
 
-        </tbody>
-    </table>
-    <script>
-
-</script>
-</th:block>
+<table style="margin:5rem;">
+    <thead>
+    <th>제목</th>
+    <th>작성자</th>
+    </thead>
+    <tbody>
+    <th:block th:each="lst, i : ${board}">
+        <tr>
+            <td th:text="${lst.getTitle()}"></td>
+            <td th:text="${lst.getMember().getName()}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+<div class="pagination">
+    <th:block th:each="lst : ${total}">
+        <a th:text="${lst}" th:href="@{/board/list(page=${lst})}"></a>
+    </th:block>
+</div>
+</body>
+</html>
