@@ -22,12 +22,12 @@ public class Member {
     @Column(name="name", columnDefinition="varchar(32)")
     private String name;
 
-    @Column(name="password", columnDefinition="varchar(500)")
-    private String password;
+//    @Column(name="password", columnDefinition="varchar(500)")
+//    private String password;
 
     @Column(name="address", columnDefinition="varchar(50)")
     private String address;
 
-    @Column(name="type", columnDefinition="varchar(10)")
-    private String type;
+//    @Column(name="type", columnDefinition="varchar(10)")
+//    private String type;
 }

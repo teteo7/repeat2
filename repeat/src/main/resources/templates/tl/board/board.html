@@ -31,16 +31,27 @@
     <tbody>
     <th:block th:each="lst, i : ${board}">
         <tr>
-            <td th:text="${lst.getTitle()}"></td>
+            <td ><a th:href="@{/board/view(pk=${lst.getId()})}" th:text="${lst.getTitle()}"></a></td>
             <td th:text="${lst.getMember().getName()}"></td>
+
         </tr>
     </th:block>
     </tbody>
 </table>
 <div class="pagination">
-    <th:block th:each="lst : ${total}">
-        <a th:text="${lst}" th:href="@{/board/list(page=${lst})}"></a>
+    <th:block th:each="lst : ${#numbers.sequence(1, total)}">
+
+        <a th:if="${lst == page.getPageNumber() + 1 }" style="color: red" th:text="${lst}"></a>
+        <a th:unless="${lst == page.getPageNumber()+ 1}" th:text="${lst}" th:href="@{/board/list(page=${lst})}"></a>
     </th:block>
+
+
+<!--    <th:block th:each="lst : ${total}">-->
+<!--        <a th:text="${lst}" th:href="@{/board/list(page=${lst})}"></a>-->
+<!--    </th:block>-->
+</div>
+<div>
+    <a href="/board/create">생성</a>
 </div>
 </body>
 </html>
