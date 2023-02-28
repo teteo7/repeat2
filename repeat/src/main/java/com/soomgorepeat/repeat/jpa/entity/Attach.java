@@ -31,8 +31,6 @@
 //    @Column(name="date_created", columnDefinition="datetime")
 //    private Date dateCreated;
 //
-//    @ManyToOne(targetEntity = Board.class, fetch= FetchType.LAZY)
-//    @JoinColumn(name= "board", referencedColumnName = "id")
-//    private Board board;
+//
 //
 //}

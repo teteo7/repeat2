@@ -34,9 +34,11 @@ public class Board {
     @JoinColumn(name = "member", referencedColumnName="id")
     private Member member;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "board", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = RelUserBoardFavorite.class)
-//    private Collection<RelUserBoardFavorite> relUserBoardFavorites;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "board", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = RelUserBoardFavorite.class)
+    private Collection<RelUserBoardFavorite> relUserBoardFavorites;
+
+
 
 
 }

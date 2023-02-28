@@ -82,11 +82,16 @@ public class BoardController {
 
     @RequestMapping(value = "del", method = RequestMethod.POST)
     public String delete_board(Model model, @RequestParam Map<String, Object> data) {
-
-        boardService.deleteBoard(data);
+        try {
+            boardService.deleteBoard(data);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return "redirect:/board/list";
     }
-
+// 브레이크포인트, 디버깅할때 데이터 넘겨주는 return쪽에 표시해서 값 확인하기
 
 
 
