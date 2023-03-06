@@ -16,7 +16,9 @@
     <label>내용</label><textarea th:text="${board.getContent()}" readonly name="content" rows="5" style="    width: 300px;
     font-size: 12pt;"></textarea>
 </div>
-
+<div>
+    <img th:if="${attach != null}" th:src="@{'/attach/' + ${attach.getId()}}">
+</div>
 <div>
     <form action="/board/del" method="post" id="delForm">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -27,7 +29,7 @@
 </div>
 
 <script>
-    console.log("test");
+
     function doDelete()
     {
         if (confirm("삭제하시겠습니까?") == true)

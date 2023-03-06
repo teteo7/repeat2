@@ -1,15 +1,23 @@
 package com.soomgorepeat.repeat.jpa.controller;
 
 import com.soomgorepeat.repeat.jpa.entity.Board;
+import com.soomgorepeat.repeat.jpa.entity.Member;
+import com.soomgorepeat.repeat.jpa.entity.RelUserBoardFavorite;
+import com.soomgorepeat.repeat.jpa.repository.BoardRepository;
+import com.soomgorepeat.repeat.jpa.repository.MemberRepository;
+import com.soomgorepeat.repeat.jpa.repository.RelUserBoardFavoriteRepository;
 import com.soomgorepeat.repeat.jpa.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +27,27 @@ import java.util.Map;
 public class BoardController {
 
     BoardService boardService;
+    MemberRepository memberRepository;
+    BoardRepository boardRepository;
+    RelUserBoardFavoriteRepository relUserBoardFavoriteRepository;
 
     @Autowired
-    BoardController(BoardService boardService){
+    BoardController(BoardService boardService, MemberRepository memberRepository, BoardRepository boardRepository,
+                    RelUserBoardFavoriteRepository relUserBoardFavoriteRepository){
         this.boardService = boardService;
-    }
+        this.memberRepository = memberRepository;
+        this.boardRepository = boardRepository;
+        this.relUserBoardFavoriteRepository = relUserBoardFavoriteRepository;
 
+    }
     @RequestMapping(value = "list", method= RequestMethod.GET)
         public String list(Model model, @RequestParam(value = "page", required=false) Integer page){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        Member member = memberRepository.findByName(name).get();
+        List<RelUserBoardFavorite> relUserBoardFavorites = relUserBoardFavoriteRepository.findByMember(member);
+
 
         Page<Board> pageBoards = boardService.loadBoard(page);
         List<Board> boards = pageBoards.getContent();
@@ -40,7 +61,7 @@ public class BoardController {
         model.addAttribute("board", boards);
         model.addAttribute("total", s3);
         model.addAttribute("page", pg);
-
+        model.addAttribute("relUserBoardFavorites", relUserBoardFavorites);
         return "tl/board/board";
     }
 
@@ -50,11 +71,12 @@ public class BoardController {
         return "tl/board/board_create";
     }
 
-    @RequestMapping(value = "create", method= RequestMethod.POST)
-    public String create(Model model, @RequestParam Map<String, Object> data){
+    @RequestMapping(value = "create", method = RequestMethod.POST)
+    public String create_post(Model model, @RequestParam Map<String, Object> data) {
 
         boardService.saveBoard(data);
         return "redirect:/board/list";
+        //return "tl/board/board";
     }
 
     @RequestMapping(value = "view", method= RequestMethod.GET)

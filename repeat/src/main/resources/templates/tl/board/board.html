@@ -3,7 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
 <style>
@@ -27,13 +30,19 @@
     <thead>
     <th>제목</th>
     <th>작성자</th>
+    <th>즐겨찾기</th>
+
     </thead>
     <tbody>
     <th:block th:each="lst, i : ${board}">
         <tr>
             <td ><a th:href="@{/board/view(pk=${lst.getId()})}" th:text="${lst.getTitle()}"></a></td>
             <td th:text="${lst.getMember().getName()}"></td>
-
+            <td class="favorite_td" th:data-id="${lst.getId()}">
+                <th:block th:each="rel :${relUserBoardFavorites}">
+                    <button th:if="${lst.getId() == rel.getBoard().getId()}">즐겨찾기되었음.</button>
+                </th:block>
+            </td>
         </tr>
     </th:block>
     </tbody>
@@ -44,14 +53,35 @@
         <a th:if="${lst == page.getPageNumber() + 1 }" style="color: red" th:text="${lst}"></a>
         <a th:unless="${lst == page.getPageNumber()+ 1}" th:text="${lst}" th:href="@{/board/list(page=${lst})}"></a>
     </th:block>
-
-
-<!--    <th:block th:each="lst : ${total}">-->
-<!--        <a th:text="${lst}" th:href="@{/board/list(page=${lst})}"></a>-->
-<!--    </th:block>-->
 </div>
+
 <div>
     <a href="/board/create">생성</a>
 </div>
+<script>
+
+
+    function doFavorite(boardId)
+    {
+        const token = $("meta[name='_csrf']").attr("content");
+        const header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            url: "/board/favorite/do.json",
+            data: JSON.stringify({"boardId":boardId}),
+            type: 'POST',
+            accept:"application/json",
+            contentType:"application/json; charset=utf-8",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (result) {
+
+
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
